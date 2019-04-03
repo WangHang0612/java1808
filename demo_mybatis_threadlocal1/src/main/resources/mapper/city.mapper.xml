@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanghang.fxmall.goods.mapper.CityMapper">
+    <resultMap id="connResultMap" type="com.wanghang.fxmall.goods.bean.City">
+        <id property="cityId" column="city_id" javaType="java.lang.Integer"/>
+        <result property="cityName" column="city_name" javaType="java.lang.String"/>
+        <result property="provinceId" column="province_id" javaType="java.lang.String"/>
+        <result property="firstLetter" column="first_letter" javaType="java.lang.String"/>
+        <result property="isHost" column="is_host" javaType="java.lang.Integer"/>
+        <result property="state" column="state" javaType="java.lang.Integer"/>
+        <!--多对一-->
+        <association property="province" javaType="com.wanghang.fxmall.goods.bean.Province">
+            <id property="provinceId" column="province_id" javaType="java.lang.String"/>
+            <result property="provinceName" column="province_name" javaType="java.lang.String"/>
+        </association>
+    </resultMap>
+    <resultMap id="baseResultMap" type="com.wanghang.fxmall.goods.bean.City">
+        <id property="cityId" column="city_id" javaType="java.lang.Integer"/>
+        <result property="cityName" column="city_name" javaType="java.lang.String"/>
+        <result property="provinceId" column="province_id" javaType="java.lang.String"/>
+        <result property="firstLetter" column="first_letter" javaType="java.lang.String"/>
+        <result property="isHost" column="is_host" javaType="java.lang.Integer"/>
+        <result property="state" column="state" javaType="java.lang.Integer"/>
+    </resultMap>
+    <select id="queryAllCity" resultMap="baseResultMap">
+        select * from city
+    </select>
+    <select id="queryAllCityById" resultMap="baseResultMap">
+        select * from city where city_id=#{cityId}
+    </select>
+    <insert id="inCity">
+        insert into city(city_id,city_name,province_id,first_letter,is_host,state) values
+        (#{cityId},#{cityName},#{provinceId},#{firstLetter},#{isHost},#{state})
+    </insert>
+    <update id="updateCity">
+        update city set city_name=#{cityName} where city_id=#{cityId}
+    </update>
+    <select id="queryCityAndProvince" resultMap="connResultMap">
+        select * from province p join city c on p.province_id = c.province_id
+    </select>
+</mapper>
